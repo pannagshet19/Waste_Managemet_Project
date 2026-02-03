@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Government Dashboard</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .ward {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Government Dashboard</h1>
+        <div id="ward-updates"></div>
+    </div>
+
+    <script>
+        async function fetchWardUpdates() {
+            try {
+                const response = await fetch('http://localhost:3000/api/all-ward-updates');
+                const wardUpdates = await response.json();
+
+                 // Sort the ward updates by ward number in increasing order
+                 wardUpdates.sort((a, b) => a.wardNumber - b.wardNumber);
+
+                const wardUpdatesHtml = wardUpdates.map(ward => `
+                    <div class="ward">
+                        <h3>WardNumber: ${ward.wardNumber}</h3>
+                        <p>Wardmail ID: ${ward._id}</p>
+                        <p>Average Rating: ${ward.rating.toFixed(2)}</p>
+                    </div>
+                `).join('');
+
+                document.getElementById('ward-updates').innerHTML = wardUpdatesHtml;
+            } catch (error) {
+                console.error('Error fetching ward updates:', error);
+                alert('Error fetching ward updates. Please try again later.');
+            }
+        }
+
+        fetchWardUpdates();
+    </script>
+</body>
+</html>

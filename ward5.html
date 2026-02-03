@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ward 5 Daily Update</title>
+</head>
+<body>
+    <h2>Ward 5 Daily Update</h2>
+    <form id="daily-update-form">
+        <label>
+            Workers Arrived:
+            <input type="checkbox" id="workers-arrived" name="workersArrived">
+        </label><br>
+        <label>
+            Garbage Collected:
+            <input type="checkbox" id="garbage-collected" name="garbageCollected">
+        </label><br>
+        <label>
+            Garbage Left:
+            <input type="checkbox" id="garbage-left" name="garbageLeft">
+        </label><br>
+        <label>
+            Rainy Day:
+            <input type="checkbox" id="rainy-day" name="rainyDay">
+        </label><br>
+        <input type="hidden" id="wardmailID" value="ulsoor1@gmail.com"> <!-- Hidden field for wardmailID -->
+        <button type="submit">Submit</button>
+    </form>
+    <div id="message"></div>
+    <div id="rating"></div>
+    <div id="average-rating"></div>
+
+    <script>
+        document.getElementById('daily-update-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const wardmailID = document.getElementById('wardmailID').value;
+            const workersArrived = document.getElementById('workers-arrived').checked;
+            const garbageCollected = document.getElementById('garbage-collected').checked;
+            const garbageLeft = document.getElementById('garbage-left').checked;
+            const rainyDay = document.getElementById('rainy-day').checked;
+
+            if (rainyDay) {
+                document.getElementById('workers-arrived').disabled = true;
+                document.getElementById('garbage-collected').disabled = true;
+                document.getElementById('garbage-left').disabled = true;
+            }
+
+
+            const response = await fetch('http://localhost:3001/api/daily-update', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ wardmailID, workersArrived, garbageCollected, garbageLeft, rainyDay})
+            });
+
+            const result = await response.json();
+            document.getElementById('message').textContent = result.message;
+            if (result.rating !== undefined) {
+                document.getElementById('rating').textContent = `Rating: ${result.rating} stars`;
+            }
+            if (result.averageRating !== undefined) {
+                document.getElementById('average-rating').textContent = `Average Rating: ${result.averageRating.toFixed(2)} stars`;
+            }
+        });
+    </script>
+</body>
+</html>
