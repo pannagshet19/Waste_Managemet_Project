@@ -32,31 +32,25 @@ waste-management
 
 ---
 
-## ▶️ How to Run the Project
+▶️ How to Run the Project
 
-1. Download or clone the repository
-```bash
+Download or clone the repository
+
 git clone https://github.com/your-username/waste-management.git
-Open index.html in any browser
-(No server required)
 
-🧪 Usage
-Add waste collection details
 
-Track waste status
+Open the project folder
 
-Manage user requests
+cd waste-management
 
-View stored records
 
-📌 Future Enhancements
-Backend integration (Node.js)
+Run the project
 
-Database support
+Open index.html in any web browser
+(Chrome / Edge / Firefox)
 
-Admin panel
-
-Authentication system
-
+✅ No server setup required
+✅ No database required
+✅ Works directly in the browser
 Dashboard analytics
 
